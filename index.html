@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heart Healing Symbol Cards • Online Oracle</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --purple-dark: #12061f;
+    --purple-mid: #2a1545;
+    --pink-glow: #c77dff;
+    --gold: #f0d9a0;
+    --text: #f8f0ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: radial-gradient(ellipse at top, #2a1545 0%, #12061f 60%, #0a0312 100%);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 16px 100px;
+  }
+
+  header {
+    text-align: center;
+    padding: 40px 0 10px;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    background: linear-gradient(90deg, #e0aaff, #c77dff, #f0d9a0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+    opacity: 0.85;
+    font-style: italic;
+  }
+
+  .intention {
+    background: rgba(107, 63, 160, 0.2);
+    border: 1px solid rgba(199, 125, 255, 0.25);
+    border-radius: 20px;
+    padding: 24px 30px;
+    margin: 30px auto 40px;
+    max-width: 680px;
+    text-align: center;
+    font-size: 1.25rem;
+  }
+
+  .intention strong {
+    display: block;
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+  }
+
+  /* ========== DECK (previous style you preferred) ========== */
+  .spread-section {
+    margin: 40px 0 40px;
+    text-align: center;
+  }
+
+  .spread-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.35rem;
+    color: var(--pink-glow);
+    margin-bottom: 50px;
+    letter-spacing: 2px;
+  }
+
+  .card-spread {
+    position: relative;
+    height: 260px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .card-back {
+    width: 105px;
+    height: 162px;
+    background: url('images/back.jpg') center/cover;
+    border-radius: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 50px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    border: 2px solid rgba(199, 125, 255, 0.4);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: center bottom;
+  }
+
+  /* Hover – jumps out to the right */
+  .card-back:hover {
+    transform: translateY(-40px) rotate(9deg) scale(1.18);
+    box-shadow: 0 25px 45px rgba(199, 125, 255, 0.55);
+    border-color: var(--pink-glow);
+    z-index: 300 !important;
+  }
+
+  .card-back.selected {
+    opacity: 0.25;
+    pointer-events: none;
+    transform: scale(0.85) !important;
+  }
+
+  /* ========== READING AREA ========== */
+  .reading-area {
+    max-width: 920px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .slot-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: var(--gold);
+    margin-bottom: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .card-front {
+    width: 220px;
+    height: 340px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+    border: 3px solid rgba(199, 125, 255, 0.4);
+    background: linear-gradient(145deg, #2a1545, #1a0b2e);
+  }
+
+  .card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-front.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.2);
+    font-size: 3.5rem;
+  }
+
+  /* Nice pop-up animation when card is selected */
+  .card-front.revealed {
+    border-color: var(--pink-glow);
+    animation: cardReveal 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+
+  @keyframes cardReveal {
+    0% {
+      opacity: 0;
+      transform: scale(0.7) translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    margin: 14px 0 12px;
+    color: var(--pink-glow);
+  }
+
+  .short-pill {
+    background: linear-gradient(135deg, #5b2d8e, #7b3fb0);
+    border: 1px solid rgba(199, 125, 255, 0.5);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 40px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 240px;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    line-height: 1.3;
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .short-pill.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s ease 0.15s;
+  }
+
+  .short-pill:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(199, 125, 255, 0.45);
+    border-color: var(--pink-glow);
+  }
+
+  /* ========== MODAL & BUTTONS ========== */
+  .full-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .full-modal.active {
+    display: flex;
+  }
+
+  .full-modal-content {
+    background: white;
+    color: #222;
+    border-radius: 16px;
+    padding: 40px 50px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 82vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    position: relative;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .full-modal-content p { margin-bottom: 1.1em; }
+
+  .full-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .controls {
+    text-align: center;
+    margin: 50px 0 20px;
+  }
+
+  button {
+    background: linear-gradient(135deg, #6b3fa0, #9d4edd);
+    color: white;
+    border: none;
+    padding: 16px 42px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(157, 78, 221, 0.45);
+    letter-spacing: 1.5px;
+  }
+
+  button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(157, 78, 221, 0.65);
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.95rem;
+    opacity: 0.65;
+  }
+
+  @media (max-width: 900px) {
+    .card-spread { height: 220px; }
+    .card-back { width: 85px; height: 132px; }
+    .reading-area {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      max-width: 280px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Heart Healing Symbol Cards</h1>
+      <p class="subtitle">Soul Guidance • Online Oracle</p>
+    </header>
+
+    <div class="intention">
+      <strong>Clear your mind and focus</strong>
+      Take a deep breath. Hold your question or simply ask:<br>
+      “What do I most need to know right now?”<br>
+      Then intuitively choose three cards.
+    </div>
+
+    <div class="spread-section">
+      <div class="spread-title">Choose your cards</div>
+      <div class="card-spread" id="spread"></div>
+    </div>
+
+    <div class="reading-area">
+      <div class="slot">
+        <div class="slot-label">CARD 1</div>
+        <div class="card-front empty" id="slot1">?</div>
+        <div class="card-title" id="title1"></div>
+        <div class="short-pill" id="pill1"></div>
+      </div>
+      <div class="slot">
+        <div class="slot-label">CARD 2</div>
+        <div class="card-front empty" id="slot2">?</div>
+        <div class="card-title" id="title2"></div>
+        <div class="short-pill" id="pill2"></div>
+      </div>
+      <div class="slot">
+        <div class="slot-label">CARD 3</div>
+        <div class="card-front empty" id="slot3">?</div>
+        <div class="card-title" id="title3"></div>
+        <div class="short-pill" id="pill3"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="newReading()">✦ New Reading / Reshuffle ✦</button>
+    </div>
+
+    <footer>
+      Heart Healing Symbol Cards • Created by Faye N. Rosie ND
+    </footer>
+  </div>
+
+  <div class="full-modal" id="cardModal">
+    <div class="full-modal-content">
+      <span class="full-modal-close" onclick="closeModal()">&times;</span>
+      <div id="modalBody">Loading...</div>
+    </div>
+  </div>
+
+<script>
+  const CARD_DECK = [
+    { id: "ABUNDANCE",          name: "Abundance",          short: "The power to receive",                      file: "HHS_ABUNDANCE.png" },
+    { id: "ACCORD",             name: "Accord",             short: "Releasing the cords that bind you",         file: "HHS_ACCORD.png" },
+    { id: "AMBIENCE",           name: "Ambience",           short: "Clearing and transforming the space around you", file: "HHS_AMBIENCE.png" },
+    { id: "AWAKENING",          name: "Awakening",          short: "Coming back to life",                       file: "HHS_AWAKENING.png" },
+    { id: "BALM",               name: "Balm",               short: "The first aid for your heart",              file: "HHS_BALM.png" },
+    { id: "BEAUTY_FOR_ASHES",   name: "Beauty For Ashes",   short: "Rising from what tried to burn you",        file: "HHS_BEAUTY FOR ASHES.png" },
+    { id: "BELIEF",             name: "Belief",             short: "Finding the truth beneath the belief",      file: "HHS_BELIEF.png" },
+    { id: "BRAIN",              name: "Brain",              short: "Clarity, focus and the mind made whole",    file: "HHS_BRAIN.png" },
+    { id: "CREATION",           name: "Creation",           short: "You are a creator",                         file: "HHS_CREATION.png" },
+    { id: "EMPATHY",            name: "Empathy",            short: "Knowing what is yours, and what is not",    file: "HHS_EMPATHY.png" },
+    { id: "ENDURANCE",          name: "Endurance",          short: "One more metre in the dark",                file: "HHS_ENDURANCE.png" },
+    { id: "FREEDOM",            name: "Freedom",            short: "The door was never locked",                 file: "HHS_FREEDOM.png" },
+    { id: "GENERATION",         name: "Generation",         short: "Rewriting what was passed down",            file: "HHS_GENERATION.png" },
+    { id: "GRIEF_RELEASE",      name: "Grief Release",      short: "Letting what was trapped move again",       file: "HHS_GRIEF RELEASE.png" },
+    { id: "HAVEN",              name: "Haven",              short: "A place to be held",                        file: "HHS_HAVEN.png" },
+    { id: "HISTORY",            name: "History",            short: "Changing the past to change the now",       file: "HHS_HISTORY.png" },
+    { id: "ILLUMINATION",       name: "Illumination",       short: "Washing off what isn't yours",              file: "HHS_ILLUMINATION.png" },
+    { id: "INTEGRATION",        name: "Integration",        short: "Calling your soul parts home",              file: "HHS_INTEGRATION.png" },
+    { id: "POLARITY",           name: "Polarity",           short: "Resetting the current",                     file: "HHS_POLARITY.png" },
+    { id: "PRESENCE",           name: "Presence",           short: "Coming back into your body",                file: "HHS_PRESENCE.png" },
+    { id: "PURPOSE",            name: "Purpose",            short: "Walking the path already laid for you",     file: "HHS_PURPOSE.png" },
+    { id: "RADIATION",          name: "Radiation",          short: "Shielding you from the modern world",       file: "HHS_RADIATION.png" },
+    { id: "RESTORATION",        name: "Restoration",        short: "Clearing what doesn't belong to you",       file: "HHS_RESTORATION.png" },
+    { id: "REVITALISATION",     name: "Revitalisation",     short: "A spiritual shower and a full refuel",      file: "HHS_REVITALISATION.png" },
+    { id: "SEEING",             name: "Seeing",             short: "Lifting the scales from your eyes",         file: "HHS_SEEING.png" },
+    { id: "SHADOW",             name: "Shadow",             short: "The parts of you waiting to be embraced",   file: "HHS_SHADOW.png" },
+    { id: "SUNRISE",            name: "Sunrise",            short: "Removing what sabotages your joy",          file: "HHS_SUNRISE.png" },
+    { id: "TRANSFORMATION",     name: "Transformation",     short: "Becoming crystal, becoming light",          file: "HHS_TRANSFORMATION.png" },
+    { id: "TRANSITION",         name: "Transition",         short: "No longer, but not yet",                    file: "HHS_TRANSITION.png" },
+    { id: "WORD",               name: "Word",               short: "Speaking your heartfelt truth",             file: "HHS_WORD.png" }
+  ];
+
+  let selectedCards = [];
+  const MAX_SELECTIONS = 3;
+  let cacheMap = {};
+
+  function initDeck() {
+    const container = document.getElementById('spread');
+    container.innerHTML = '';
+
+    let deck = [...CARD_DECK];
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+
+    const startLeft = 1.5;
+    const step = 3.15;
+
+    deck.forEach((card, index) => {
+      const el = document.createElement('div');
+      el.className = 'card-back';
+      el.style.left = (startLeft + index * step) + '%';
+      el.style.zIndex = index + 1;
+      el.onclick = () => selectCard(card, el);
+      container.appendChild(el);
+    });
+  }
+
+  function selectCard(card, element) {
+    if (selectedCards.length >= MAX_SELECTIONS || element.classList.contains('selected')) return;
+
+    element.classList.add('selected');
+    selectedCards.push(card);
+    revealSlot(selectedCards.length, card);
+  }
+
+  function revealSlot(slotNum, card) {
+    const slot = document.getElementById(`slot${slotNum}`);
+    const title = document.getElementById(`title${slotNum}`);
+    const pill  = document.getElementById(`pill${slotNum}`);
+    
+    slot.className = 'card-front revealed';
+    slot.innerHTML = `<img src="images/${card.file}" alt="${card.name}">`;
+    
+    if (title) title.innerText = card.name;
+    
+    // Animate the short pill in after a short delay
+    setTimeout(() => {
+      pill.innerHTML = card.short;
+      pill.classList.add('visible');
+      pill.onclick = () => showFullDescription(card);
+    }, 300);
+  }
+
+  function showFullDescription(card) {
+    const fileUrl = `docs/HHS_${card.id}.html`;
+    
+    if (cacheMap[fileUrl]) {
+      openModal(cacheMap[fileUrl]);
+      return;
+    }
+    
+    document.getElementById('modalBody').innerHTML = 'Loading...';
+    document.getElementById('cardModal').className = 'full-modal active';
+    
+    fetch(fileUrl)
+      .then(r => r.ok ? r.text() : Promise.reject())
+      .then(html => {
+        let content = html;
+        if (html.includes('<body>')) {
+          content = html.split('<body>')[1].split('</body>')[0];
+        }
+        cacheMap[fileUrl] = content;
+        openModal(content);
+      })
+      .catch(() => openModal(`<h2>${card.name}</h2><p>Description file not found.</p>`));
+  }
+
+  function openModal(content) {
+    document.getElementById('modalBody').innerHTML = content;
+    document.getElementById('cardModal').className = 'full-modal active';
+  }
+
+  function closeModal() {
+    document.getElementById('cardModal').className = 'full-modal';
+  }
+
+  function newReading() {
+    selectedCards = [];
+    
+    for (let i = 1; i <= 3; i++) {
+      document.getElementById(`slot${i}`).className = 'card-front empty';
+      document.getElementById(`slot${i}`).innerHTML = '?';
+      document.getElementById(`title${i}`).innerText = '';
+      const pill = document.getElementById(`pill${i}`);
+      pill.classList.remove('visible');
+      pill.innerHTML = '';
+    }
+    initDeck();
+  }
+
+  window.onload = initDeck;
+</script>
+</body>
+</html>
